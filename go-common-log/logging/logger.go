@@ -61,11 +61,11 @@ func New(out, errOut io.Writer, f Formatter) Logger {
 	}
 
 	l := make(map[level]LoggerInterface, 5)
-	l[DEBUG] = &Wrapper{lvl: DEBUG, formatter: f, logger: log.New(out, f.GetPrefix(DEBUG)+prefix[DEBUG], flag)}
-	l[INFO] = &Wrapper{lvl: INFO, formatter: f, logger: log.New(out, f.GetPrefix(INFO)+prefix[INFO], flag)}
-	l[WARNING] = &Wrapper{lvl: INFO, formatter: f, logger: log.New(out, f.GetPrefix(WARNING)+prefix[WARNING], flag)}
-	l[ERROR] = &Wrapper{lvl: INFO, formatter: f, logger: log.New(errOut, f.GetPrefix(ERROR)+prefix[ERROR], flag)}
-	l[FATAL] = &Wrapper{lvl: INFO, formatter: f, logger: log.New(errOut, f.GetPrefix(FATAL)+prefix[FATAL], flag)}
+	l[DEBUG] = &Wrapper{lvl: DEBUG, formatter: f, logger: log.New(out, GetPrefix(DEBUG)+prefix[DEBUG], flag)}
+	l[INFO] = &Wrapper{lvl: INFO, formatter: f, logger: log.New(out, GetPrefix(INFO)+prefix[INFO], flag)}
+	l[WARNING] = &Wrapper{lvl: INFO, formatter: f, logger: log.New(out, GetPrefix(WARNING)+prefix[WARNING], flag)}
+	l[ERROR] = &Wrapper{lvl: INFO, formatter: f, logger: log.New(errOut, GetPrefix(ERROR)+prefix[ERROR], flag)}
+	l[FATAL] = &Wrapper{lvl: INFO, formatter: f, logger: log.New(errOut, GetPrefix(FATAL)+prefix[FATAL], flag)}
 
 	return Logger(l)
 }
@@ -79,63 +79,63 @@ type Wrapper struct {
 
 // Print ...
 func (w *Wrapper) Print(v ...interface{}) {
-	v = w.formatter.Format(w.lvl, v...)
-	v = append(v, w.formatter.GetSuffix(w.lvl))
-	w.logger.Print(v...)
+	v = Format(w.lvl, v...)
+	v = append(v, GetSuffix(w.lvl))
+	Print(v...)
 }
 
 // Printf ...
 func (w *Wrapper) Printf(format string, v ...interface{}) {
-	suffix := w.formatter.GetSuffix(w.lvl)
-	v = w.formatter.Format(w.lvl, v...)
-	w.logger.Printf("%s"+format+suffix, v...)
+	suffix := GetSuffix(w.lvl)
+	v = Format(w.lvl, v...)
+	Printf("%s"+format+suffix, v...)
 }
 
 // Println ...
 func (w *Wrapper) Println(v ...interface{}) {
-	v = w.formatter.Format(w.lvl, v...)
-	v = append(v, w.formatter.GetSuffix(w.lvl))
-	w.logger.Println(v...)
+	v = Format(w.lvl, v...)
+	v = append(v, GetSuffix(w.lvl))
+	Println(v...)
 }
 
 // Fatal ...
 func (w *Wrapper) Fatal(v ...interface{}) {
-	v = w.formatter.Format(w.lvl, v...)
-	v = append(v, w.formatter.GetSuffix(w.lvl))
-	w.logger.Fatal(v...)
+	v = Format(w.lvl, v...)
+	v = append(v, GetSuffix(w.lvl))
+	Fatal(v...)
 }
 
 // Fatalf ...
 func (w *Wrapper) Fatalf(format string, v ...interface{}) {
-	suffix := w.formatter.GetSuffix(w.lvl)
-	v = w.formatter.Format(w.lvl, v...)
-	w.logger.Fatalf("%s"+format+suffix, v...)
+	suffix := GetSuffix(w.lvl)
+	v = Format(w.lvl, v...)
+	Fatalf("%s"+format+suffix, v...)
 }
 
 // Fatalln ...
 func (w *Wrapper) Fatalln(v ...interface{}) {
-	v = w.formatter.Format(w.lvl, v...)
-	v = append(v, w.formatter.GetSuffix(w.lvl))
-	w.logger.Fatalln(v...)
+	v = Format(w.lvl, v...)
+	v = append(v, GetSuffix(w.lvl))
+	Fatalln(v...)
 }
 
 // Panic ...
 func (w *Wrapper) Panic(v ...interface{}) {
-	v = w.formatter.Format(w.lvl, v...)
-	v = append(v, w.formatter.GetSuffix(w.lvl))
-	w.logger.Fatal(v...)
+	v = Format(w.lvl, v...)
+	v = append(v, GetSuffix(w.lvl))
+	Fatal(v...)
 }
 
 // Panicf ...
 func (w *Wrapper) Panicf(format string, v ...interface{}) {
-	suffix := w.formatter.GetSuffix(w.lvl)
-	v = w.formatter.Format(w.lvl, v...)
-	w.logger.Panicf("%s"+format+suffix, v...)
+	suffix := GetSuffix(w.lvl)
+	v = Format(w.lvl, v...)
+	Panicf("%s"+format+suffix, v...)
 }
 
 // Panicln ...
 func (w *Wrapper) Panicln(v ...interface{}) {
-	v = w.formatter.Format(w.lvl, v...)
-	v = append(v, w.formatter.GetSuffix(w.lvl))
-	w.logger.Panicln(v...)
+	v = Format(w.lvl, v...)
+	v = append(v, GetSuffix(w.lvl))
+	Panicln(v...)
 }
